@@ -4,6 +4,8 @@ from e_tender_api import views
 
 router = DefaultRouter()
 router.register('hello-viewset', views.HelloViewSets, basename='hello-viewset')
+router.register('profile', views.UserProfileViewSet)
+
 
 urlpatterns = [
     path('hello-view/', views.HelloApiView.as_view()),
