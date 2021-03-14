@@ -50,6 +50,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     
     objects = UserProfileManager()
 
+    """overriding username field"""
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['organization_name']
 
@@ -64,6 +65,36 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Return string representation of user"""
         return self.email
+
+class Tenders(models.Model):
+    """Database model for Tenders in system"""
+
+    status_option={
+        ('active' , 'Active'),
+        ('inactive' , 'Inactive')
+    }
+
+    category_option={
+        ('construction', 'Construction'),
+        ('medical', 'Medical'),
+        ('electrical', 'Electrical'),
+        ('it', 'IT'),
+        ('telecom', 'Telecom'),
+        ('oil and gas', 'Oil and Gas'),
+        ('others','Others')
+    }
+    category=models.CharField(max_length=100,choices=category_option,default='Construction')
+    organization_name=models.ForeignKey(UserProfile,on_delete=models.CASCADE,default=1)
+    title=models.CharField(max_length=100,default='')
+    availibility=models.CharField(max_length=10,choices=status_option,default="active")
+    region=models.CharField(max_length=20,default='')
+    description=models.TextField(default='')
+    contact=PhoneNumberField(blank=False, null=True, unique=True,default=0)
+    opening_date=models.DateField(default='')
+    last_date=models.DateField(default='')
+    upload = models.FileField(upload_to='uploads/',default='')
+    
+
 
 class ProfileFeedItem(models.Model):
     """Profile status update"""

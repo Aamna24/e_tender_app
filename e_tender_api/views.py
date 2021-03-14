@@ -99,6 +99,14 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('organization_name', 'email',)
+   
+
+class TenderViewSet(viewsets.ModelViewSet):
+    """handle creating tender"""
+    serializer_class = serializers.PublishTenderSerializer
+    queryset = models.Tenders.objects.all()
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('category', )
 
 
 class UserLoginApiView(ObtainAuthToken):
