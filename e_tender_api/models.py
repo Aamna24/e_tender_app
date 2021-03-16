@@ -92,7 +92,7 @@ class Tenders(models.Model):
     contact=PhoneNumberField(blank=False, null=True, unique=True,default=0)
     opening_date=models.DateField(default='')
     last_date=models.DateField(default='')
-    upload = models.FileField(upload_to='uploads/',default='')
+    
     
 
 

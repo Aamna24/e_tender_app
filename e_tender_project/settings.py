@@ -128,5 +128,5 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'e_tender_api.UserProfile'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3002"
+    "http://localhost:3000"
 ]
