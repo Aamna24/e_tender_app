@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import cloudinary
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -52,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    
+
 ]
 
 ROOT_URLCONF = 'e_tender_project.urls'
@@ -127,6 +129,15 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'e_tender_api.UserProfile'
 
+# MEDIA_URL="/media/"
+
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
 ]
+
+cloudinary.config(
+    cloud_name='dexn8tnt9',
+    api_key='828443825275634',
+    api_secret='oYWmlitChe7pZ7K9PatCNZaXfMk'
+)

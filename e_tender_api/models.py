@@ -4,6 +4,9 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 from django.conf import settings
+from django.utils.timezone import now
+from datetime import datetime
+
 
 class UserProfileManager(BaseUserManager):
     """Manager for user profiles"""
@@ -15,8 +18,9 @@ class UserProfileManager(BaseUserManager):
         if not organization_name:
             raise ValueError('Organization Name is no correct')
 
-        email=self.normalize_email(email)
-        user = self.model(organization_name=organization_name,email=email, **extra_fields)
+        email = self.normalize_email(email)
+        user = self.model(organization_name=organization_name,
+                          email=email, **extra_fields)
 
         user.set_password(password)
         user.save(using=self._db)
@@ -27,7 +31,8 @@ class UserProfileManager(BaseUserManager):
         """
         Create and save a SuperUser with the given email and password.
         """
-        user=self.create_user(organization_name,email,password,**extra_fields)
+        user = self.create_user(organization_name, email,
+                                password, **extra_fields)
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
@@ -35,19 +40,17 @@ class UserProfileManager(BaseUserManager):
         return user
 
 
-
-
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Database model for users in the system"""
     email = models.EmailField(max_length=255, unique=True)
     organization_name = models.CharField(max_length=255)
-    #password=models.CharField(max_length=250,default='')      
-    ntn=models.IntegerField(default=0)
-    address=models.CharField(max_length=100)
-    contact=PhoneNumberField(blank=False, null=False)
+    # password=models.CharField(max_length=250,default='')
+    ntn = models.IntegerField(default=0)
+    address = models.CharField(max_length=100)
+    contact = PhoneNumberField(blank=False, null=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    
+
     objects = UserProfileManager()
 
     """overriding username field"""
@@ -66,45 +69,54 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         """Return string representation of user"""
         return self.email
 
+
 class Tenders(models.Model):
     """Database model for Tenders in system"""
 
-    status_option={
-        ('active' , 'Active'),
-        ('inactive' , 'Inactive')
+    status_option = {
+        ('active', 'Active'),
+        ('inactive', 'Inactive')
     }
 
-    category_option={
+    category_option = {
         ('construction', 'Construction'),
         ('medical', 'Medical'),
         ('electrical', 'Electrical'),
         ('it', 'IT'),
         ('telecom', 'Telecom'),
         ('oil and gas', 'Oil and Gas'),
-        ('others','Others')
+        ('others', 'Others')
     }
-    category=models.CharField(max_length=100,choices=category_option,default='Construction')
-    organization_name=models.ForeignKey(UserProfile,on_delete=models.CASCADE,default=1)
-    title=models.CharField(max_length=100,default='')
-    availibility=models.CharField(max_length=10,choices=status_option,default="active")
-    region=models.CharField(max_length=20,default='')
-    description=models.TextField(default='')
-    contact=PhoneNumberField(blank=False, null=True, unique=True,default=0)
-    opening_date=models.DateField(default='')
-    last_date=models.DateField(default='')
-    
-    
+    category = models.CharField(max_length=100, default='Construction')
+    organization_name = models.CharField(max_length=100, default='')
+    title = models.CharField(max_length=100, default='')
+    availibility = models.CharField(max_length=10, default="active")
+    region = models.CharField(max_length=20, default='')
+    description = models.TextField(default='')
+    contact = PhoneNumberField(blank=False, null=True, default=0)
+    opening_date = models.DateField(default='')
+    last_date = models.DateField(default='')
+    datepublished = models.DateField(auto_now_add=True)
+    file_uploaded = models.FileField(upload_to='uploads/', default='')
 
 
 class ProfileFeedItem(models.Model):
     """Profile status update"""
     user_profile = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete = models.CASCADE
+        on_delete=models.CASCADE
     )
     status_text = models.CharField(max_length=255)
-    created_on= models.DateTimeField(auto_now_add=True)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         """Return a model as a string"""
         return self.status_text
+
+
+class Bid(models.Model):
+    name = models.CharField(max_length=50, default="")
+    no_of_days = models.IntegerField(default=0)
+    bidding_amount = models.IntegerField(default=0)
+    contact = PhoneNumberField(blank=False, null=True, default=0)
+    tenderId = models.IntegerField(default=0)
