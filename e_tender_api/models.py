@@ -97,7 +97,8 @@ class Tenders(models.Model):
     opening_date = models.DateField(default='')
     last_date = models.DateField(default='')
     datepublished = models.DateField(auto_now_add=True)
-    file_uploaded = models.FileField(upload_to='uploads/', default='')
+    file_uploaded = models.FileField(upload_to='uploads', default='')
+    #totalBids = models.IntegerField(default=0)
 
 
 class ProfileFeedItem(models.Model):
@@ -120,3 +121,6 @@ class Bid(models.Model):
     bidding_amount = models.IntegerField(default=0)
     contact = PhoneNumberField(blank=False, null=True, default=0)
     tenderId = models.IntegerField(default=0)
+    file_uploaded = models.FileField(upload_to='uploads', default='')
+    postedBy = models.CharField(max_length=50, default="")
+    status = models.CharField(max_length=50, default="")

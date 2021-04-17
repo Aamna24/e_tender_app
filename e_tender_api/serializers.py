@@ -79,6 +79,7 @@ class PublishTenderSerializer(serializers.ModelSerializer):
             opening_date=validated_data['opening_date'],
             last_date=validated_data['last_date'],
             file_uploaded=request.FILES.get('file_uploaded', default='')
+            # totalBids=validated_data['totalBids']
 
 
         )
@@ -90,16 +91,22 @@ class PublishTenderSerializer(serializers.ModelSerializer):
 class PostBidSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Bid
-        fields = ('name', 'no_of_days', 'bidding_amount',
-                  'contact', 'tenderId')
+        fields = ('id', 'name', 'no_of_days', 'bidding_amount',
+                  'contact', 'tenderId', 'file_uploaded', 'postedBy', 'status')
 
     def create(self, validated_data):
+        request = self.context.get('request')
+
         bid = models.Bid(
             name=validated_data['name'],
             contact=validated_data['contact'],
             no_of_days=validated_data['no_of_days'],
             bidding_amount=validated_data['bidding_amount'],
-            tenderId=validated_data['tenderId']
+            tenderId=validated_data['tenderId'],
+            file_uploaded=request.FILES.get('file_uploaded', default=''),
+            postedBy=validated_data['postedBy'],
+            status=validated_data['status']
+
         )
 
         bid.save()

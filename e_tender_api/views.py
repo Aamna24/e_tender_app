@@ -114,7 +114,9 @@ class TenderViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PublishTenderSerializer
     queryset = models.Tenders.objects.all()
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('category', )
+    search_fields = ('category', 'region', 'description')
+
+# add search fields by keywords category etc
 
 
 class BidViewSet(viewsets.ModelViewSet):
@@ -122,7 +124,7 @@ class BidViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PostBidSerializer
     queryset = models.Bid.objects.all()
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('category', )
+    search_fields = ('bidding_amount', 'tenderId')
 
 
 class UserLoginApiView(ObtainAuthToken):

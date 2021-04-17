@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'e_tender_api',
-    'corsheaders'
+    'corsheaders',
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [
@@ -125,17 +126,26 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'e_tender_api.UserProfile'
-
-# MEDIA_URL="/media/"
 
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
 ]
 
+STATIC_URL = '/static/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, '/')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+# CLOUDINARY_STORAGE = {
+#  'CLOUD_NAME': "dexn8tnt9",
+
+# 'API_KEY': "828443825275634",
+# 'API_SECRET': "oYWmlitChe7pZ7K9PatCNZaXfMk"
+# }
 cloudinary.config(
     cloud_name='dexn8tnt9',
     api_key='828443825275634',
