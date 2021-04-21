@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import cloudinary
 import os
 from pathlib import Path
-import django_heroku
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,8 +44,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'e_tender_api',
     'corsheaders',
-    'cloudinary_storage'
-]
+    'cloudinary_storage',
+
+],
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -136,12 +138,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 STATIC_URL = '/static/'
-if DEBUG:
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-    ]
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 # MEDIA_ROOT = os.path.join(BASE_DIR, '/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -158,4 +155,3 @@ cloudinary.config(
     api_key='828443825275634',
     api_secret='oYWmlitChe7pZ7K9PatCNZaXfMk'
 )
-django_heroku.settings(locals())
